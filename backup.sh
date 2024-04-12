@@ -79,5 +79,5 @@ if [ ! -d "$source" ]; then
     exit 1
 fi
 # Call function to create backup archives
-bla bla
+backup
 
