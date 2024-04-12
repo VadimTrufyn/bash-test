@@ -17,9 +17,9 @@ To use this script, follow the instructions below:
    ```
 3. Run the script with the following options:
 
--s or --source : Specify the source directory for backup. Default is /var/log/.
--d or --destination : Specify the destination directory for backup archives. Default is /var/backup_log.
--p or --period : Specify how often to rotate backup archives in days. Default is 7 days.
+   -s  Specify the source directory for backup. Default is /var/log/.
+   -d  Specify the destination directory for backup archives. Default is /var/backup_log.
+   -p  Specify how often to rotate backup archives in days. Default is 7 days.
 Example:
 ```bash
 ./backup_script.sh -s /path/to/source -d /path/to/destination -p 7
