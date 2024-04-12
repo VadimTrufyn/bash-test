@@ -29,7 +29,7 @@ Example:
 ```
 4. The script will create backup archives for all files in the source directory and rotate old backup archives in the destination directory based on the specified period.
 
-##Automation
+## Automation
 To automate the script and make it available from any directory, you can add the script to your PATH or move it to a directory already in your PATH.
 
 
@@ -40,7 +40,7 @@ To move the script to */usr/local/bin*, use the following command:
 ```bash
 sudo mv backup.sh /usr/local/bin
 ```
-##Running Automatically with Cron
+## Running Automatically with Cron
 You can also schedule the script to run automatically using cron. To do this, follow these steps:
 
 
