@@ -1,0 +1,41 @@
+7d654cf HEAD@{0}: merge images: Fast-forward
+4802aa7 HEAD@{1}: checkout: moving from images to develop
+7d654cf HEAD@{2}: rebase (finish): returning to refs/heads/images
+7d654cf HEAD@{3}: rebase (pick): squash2
+4802aa7 HEAD@{4}: rebase (start): checkout develop
+332815e HEAD@{5}: commit: squash2
+6236732 HEAD@{6}: commit: squash2
+b42a11c HEAD@{7}: checkout: moving from develop to images
+4802aa7 HEAD@{8}: rebase (finish): returning to refs/heads/develop
+4802aa7 HEAD@{9}: rebase (start): checkout develop
+4802aa7 HEAD@{10}: commit: squash2
+be6e418 HEAD@{11}: commit: squash2
+440353a HEAD@{12}: commit: squash1
+a23f1c1 HEAD@{13}: commit (merge): solve conflict
+fdb8fa0 HEAD@{14}: commit: dell content
+fc32ff9 HEAD@{15}: commit: update style
+67c5c32 HEAD@{16}: checkout: moving from styles to develop
+22b4ca8 HEAD@{17}: commit: update styles
+3c6e34c HEAD@{18}: checkout: moving from develop to styles
+67c5c32 HEAD@{19}: commit: more content in html
+9100ac3 HEAD@{20}: commit: add style file in html
+3c6e34c HEAD@{21}: checkout: moving from styles to develop
+3c6e34c HEAD@{22}: checkout: moving from develop to styles
+3c6e34c HEAD@{23}: commit: add content into html
+b42a11c HEAD@{24}: checkout: moving from images to develop
+b42a11c HEAD@{25}: checkout: moving from develop to images
+b42a11c HEAD@{26}: commit: add index
+34837d1 HEAD@{27}: checkout: moving from develop to develop
+34837d1 HEAD@{28}: reset: moving to 34837d15ff1ccb5da5b9f1d1870158c84700149c
+8ed1286 HEAD@{29}: commit: add index.html
+34837d1 HEAD@{30}: checkout: moving from web-server to develop
+34837d1 HEAD@{31}: commit: web-server
+503bf7e HEAD@{32}: checkout: moving from L-task2 to web-server
+1713680 HEAD@{33}: pull: Fast-forward
+3d2dc1b HEAD@{34}: commit: update backup
+5bc4cf2 HEAD@{35}: pull --tags origin L-task2: Merge made by the 'ort' strategy.
+c0944e6 HEAD@{36}: commit: buckup update
+29f3ab7 HEAD@{37}: commit: complete script
+889d9fe HEAD@{38}: commit: arg help
+b433c2a HEAD@{39}: checkout: moving from main to L-task2
+b433c2a HEAD@{40}: clone: from github.com:VadimTrufyn/bash-test.git
