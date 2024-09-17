@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 # Get the Vercel API endpoints.
 GET_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v6/deployments"
 DELETE_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v13/deployments"
