@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -x
 # Get the Vercel API endpoints.
 GET_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v6/deployments"
@@ -9,7 +10,7 @@ ACTIONS=$2
 # Create a list of deployments.
 deployments=$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" -H "Authorization: Bearer $VERCEL_TOKEN ")
 
-filtered_deployments=$(echo $deployments | jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch) | .uid' )
+filtered_deployments=$(echo $(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" -H "Authorization: Bearer $VERCEL_TOKEN ") | jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch) | .uid' )
 uid="${filtered_deployments//\"/}" # Remove double quotes
 echo "Filtered deployments ${uid}"
 echo "action $ACTIONS to destroy"
@@ -40,4 +41,3 @@ else
     echo "Usage: $0 <branch> <action>"
     
 fi
-
