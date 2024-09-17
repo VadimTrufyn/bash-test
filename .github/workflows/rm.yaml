@@ -31,5 +31,6 @@ jobs:
       - name: Call the delete-deployment-preview.sh script
         run: |
           echo "Run script"
+          apt install jq -y
           chmod +x ./scripts/delete-deployment-preview.sh
           sh ./scripts/delete-deployment-preview.sh ${{ steps.extract_branch.outputs.branch }} apply
