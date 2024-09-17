@@ -1,0 +1,35 @@
+name: Remove deploy preview Test
+
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+on:
+  delete:
+    branches:
+      - '*'
+      - '!main'
+      - '!develop'
+      - '!uat'
+
+jobs:
+  delete-deployments:
+    if: github.event_name == 'delete'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Extract branch name
+        shell: bash
+        run: |
+          branch_name=${{ github.event.ref }}
+          echo "branch=$branch_name" >> $GITHUB_OUTPUT
+          echo "Branch name: $branch_name"
+        id: extract_branch
+
+      - name: Call the delete-deployment-preview.sh script
+        run: |
+          echo "Run script"
+          chmod +x ./scripts/delete-deployment-preview.sh
+          sh ./scripts/delete-deployment-preview.sh ${{ steps.extract_branch.outputs.branch }} apply
