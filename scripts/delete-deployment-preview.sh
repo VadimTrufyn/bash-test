@@ -12,10 +12,7 @@ deployments=$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJE
 echo "========================================================================"
 echo $deployments
 filtered_deployments=$(echo $deployments | jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch) | .uid' )
-echo "========================================================================"
-echo $filtered_deployments
-
-uid="${filtered_deployments//\"/}"  # Remove double quotes
+uid="${filtered_deployments//\"/}" 
 echo "Filtered deployments ${uid}"
 echo "action $ACTIONS to destroy"
 echo "================================================================="
