@@ -9,7 +9,7 @@ ACTIONS=$1
 
 # Create a list of deployments.
 filtered_deployments==$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" -H "Authorization: Bearer $VERCEL_TOKEN " | jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch) | .uid')
-uid="${filtered_deployments//\"/}" 
+uid=${filtered_deployments//\"/}
 echo "Filtered deployments ${uid}"
 echo "action $ACTIONS to destroy"
 echo "================================================================="
