@@ -4,8 +4,8 @@
 # Get the Vercel API endpoints.
 GET_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v6/deployments"
 DELETE_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v13/deployments"
-BRANCH=$1
-ACTIONS=$2
+
+ACTIONS=$1
 
 # Create a list of deployments.
 uid==$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" -H "Authorization: Bearer $VERCEL_TOKEN " | jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch) | .uid')
