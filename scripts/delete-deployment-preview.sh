@@ -20,7 +20,7 @@ for id in $uid; do
     echo "Deleting deployment $id ..."        
     delete_url="${DELETE_DEPLOYMENTS_ENDPOINT}/${id}?teamId=${VERCEL_ORG_ID}"
     response=$(curl -s -X DELETE "$delete_url" -H "Authorization: Bearer $VERCEL_TOKEN")
-
+    echo $response
 
 done
 
