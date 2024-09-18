@@ -8,8 +8,7 @@ DELETE_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v13/deployments"
 deployments=$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" -H "Authorization: Bearer $VERCEL_TOKEN ")
 echo $deployments
 echo "================================================================="
-filtered_deployments=$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" \
--H "Authorization: Bearer $VERCEL_TOKEN" \
+filtered_deployments=$(curl -H "Authorization: Bearer $VERCEL_TOKEN" -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" 
 | jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch) | .uid')
 
 uid="${filtered_deployments//\"/}"
