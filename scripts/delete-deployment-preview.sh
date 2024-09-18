@@ -11,7 +11,7 @@ ACTIONS=apply
 filtered_deployments=$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" -H "Authorization: Bearer $VERCEL_TOKEN "| jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch) | .uid' )
 uid="${filtered_deployments//\"/}" # Remove double quotes
 echo "Filtered deployments ${uid}"
-echo "action $ACTIONS to destroy"
+
 echo "================================================================="
 
 if [ $ACTIONS == "plan" && $uid != "" ]; then       
@@ -23,6 +23,7 @@ if [ $ACTIONS == "plan" && $uid != "" ]; then
     done
 elif [ $ACTIONS == "apply" ]; then
     for id in $uid; do
+        echo "action $ACTIONS to destroy"
         echo "================================================================="
         echo "Deleting deployment $id ..."        
         delete_url="${DELETE_DEPLOYMENTS_ENDPOINT}/${id}?teamId=${VERCEL_ORG_ID}"
