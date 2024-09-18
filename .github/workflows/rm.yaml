@@ -35,4 +35,4 @@ jobs:
           echo "Run script"
 
           chmod +x ./scripts/delete-deployment-preview.sh
-          sh ./scripts/delete-deployment-preview.sh apply
+          bash ./scripts/delete-deployment-preview.sh apply
