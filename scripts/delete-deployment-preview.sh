@@ -1,9 +1,5 @@
 #!/bin/bash
 
-
-VERCEL_PROJECT_ID=prj_GF2SVVkgkr9fTe2UAbwMn3nPogMh
-VERCEL_ORG_ID=team_jjtPNd6UnSqoqdfHQr2oNAnG
-VERCEL_TOKEN=NlGa3rGGAbnRunGJIqNR6sVp
 # Get the Vercel API endpoints.
 GET_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v6/deployments"
 DELETE_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v13/deployments"
@@ -11,19 +7,18 @@ DELETE_DEPLOYMENTS_ENDPOINT="https://api.vercel.com/v13/deployments"
 ACTIONS=apply
 
 # Create a list of deployments.
-deployments=$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" -H "Authorization: Bearer $VERCEL_TOKEN ")
 
-filtered_deployments=$(echo $deployments | jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch) | .uid' )
+filtered_deployments=$(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" -H "Authorization: Bearer $VERCEL_TOKEN "| jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch) | .uid' )
 uid="${filtered_deployments//\"/}" # Remove double quotes
 echo "Filtered deployments ${uid}"
 echo "action $ACTIONS to destroy"
 echo "================================================================="
 
-if [ $ACTIONS == "plan" ]; then       
-    echo $deployments | jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch)'
+if [ $ACTIONS == "plan" && $uid != "" ]; then       
+    echo $(curl -s -X GET "$GET_DEPLOYMENTS_ENDPOINT/?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=1000" -H "Authorization: Bearer $VERCEL_TOKEN " | jq -r --arg branch "$BRANCH" '.deployments[] | select(.meta.githubCommitRef == $branch)') || echo "preview doesnt exist for branch $BRANCH"
     for id in $uid; do
         echo "Plan to delete deployment "
-        echo $id
+        echo $id || echo "preview doesnt exist for branch $BRANCH"
         echo "================================================================="       
     done
 elif [ $ACTIONS == "apply" ]; then
