@@ -26,10 +26,11 @@ jobs:
         if [ -z "${{ github.event.inputs.environment }}" ]; then
           echo "Environment not provided, defaulting to prod"
           echo "environment=prod" >> $GITHUB_ENV
+          echo "Environment set to ${{ env.environment }}"
         else
           echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+          echo "Environment set to ${{ github.event.inputs.environment }}"
         fi
-        echo "Environment set to ${{ env.environment }}"
 
     - name: QA AutoTests Job
       run: |
