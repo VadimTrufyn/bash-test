@@ -2,16 +2,17 @@ name: Retry
 
 on:
   workflow_dispatch: 
-  
+
 jobs:
   autotests:
     runs-on: ubuntu-latest
     steps:
-      - name: Use the reusable workflow
-			  uses: nick-fields/retry@v2
-			  with:
-				  max_attempts: 3
-				  retry_on: error
-				  timeout_seconds: 5
-				  command: |
-					echo 'some command that would potentially fail'	
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Retry command with timeout
+        uses: nick-invision/retry@v2 # Правильне ім'я бібліотеки
+        with:
+          max_attempts: 3
+          timeout_seconds: 5
+          command: echo 'some command that could potentially fail'
