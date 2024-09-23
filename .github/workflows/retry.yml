@@ -15,4 +15,8 @@ jobs:
         with:
           max_attempts: 3
           timeout_seconds: 5
-          command: echo 'some command that could potentially fail'
+          retry_on: error
+          command: |
+            echo 'some command that could potentially fail'
+            docker build -t test:1 .
+            
