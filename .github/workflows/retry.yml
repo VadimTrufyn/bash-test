@@ -8,9 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Use the reusable workflow
-        run: |
-	  for i in {1..3}; do
-            docker build -t test:1 .
-  	  done
-       
-
+			  uses: nick-fields/retry@v2
+			  with:
+				  max_attempts: 3
+				  retry_on: error
+				  timeout_seconds: 5
+				  command: |
+					echo 'some command that would potentially fail'	
