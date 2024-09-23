@@ -10,7 +10,7 @@ jobs:
       - name: Use the reusable workflow
         run: |
 	  for i in {1..3}; do
-   	    echo: Attempt $1
             docker build -t test:1 .
   	  done
-				  
+       
+
