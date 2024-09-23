@@ -1,0 +1,40 @@
+name: Start QA SEO AutoTests
+
+on:
+  schedule:
+    - cron: "* * * * *"  
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment (prod, stage, uat)'
+        required: true
+        default: 'prod'
+        type: choice
+        options:
+          - prod
+          - stage
+          - uat
+concurrency:
+      group: ${{ github.head_ref || github.ref }}
+
+jobs:
+  autotests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set default environment if not provided
+      run: |
+        if [ -z "${{ github.event.inputs.environment }}" ]; then
+          echo "Environment not provided, defaulting to prod"
+          echo "environment=prod" >> $GITHUB_ENV
+        else
+          echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+        fi
+
+    - name: QA AutoTests Job
+      run: |
+        if [ "${{ env.environment }}" = "prod" ]; then
+          echo "Running QA AutoTests for production"
+          echo "Running QA AutoTests for ${{ env.environment }}"
+        else
+          echo "Running QA AutoTests for ${{ env.environment }}"
+        fi
