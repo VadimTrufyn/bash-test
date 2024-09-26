@@ -12,5 +12,5 @@ jobs:
         steps:
           - name: Print commit
             run: |
-              commitMessage=$(echo "${{github.event.head_commit.message}}" | sed -n '1p')
+              commitMessage=$(echo "${{github.event.head_commit.message}}" | sed -n '1p' | tr ' ' '-')
               echo $commitMessage
