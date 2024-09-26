@@ -8,7 +8,7 @@ on:
 
 jobs:
     annotations:
-        runs-on: promova_backend_1
+        runs-on: ubuntu-latest
         steps:
           - name: Print commit
             run: |
