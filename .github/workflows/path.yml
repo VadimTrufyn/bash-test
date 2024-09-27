@@ -7,7 +7,7 @@ on:
         - main
       paths: 
        - 'api/**'
-       - 'cmd/doc-seve/**'
+       - 'cmd/doc-serve/**'
 #        - docker-doc-server
 #      paths-ignore:
 #        - '.github/workflows/**'
