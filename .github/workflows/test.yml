@@ -29,7 +29,7 @@ concurrency:
 
 jobs:
   autotests:
-    runs-on: autotests-runner
+    runs-on: ubuntu-latest
     steps:
     - name: Setup environment vars
       run: |
