@@ -66,7 +66,4 @@ jobs:
 
     - name: QA AutoTests Job - Rerun Failed
       run: |
-        cd /home/ubuntu
-        source venv/bin/activate 
-        cd autotests/Promova-QAAutoTests/ 
         echo "pytest --last-failed --env=${{ env.environment }} --tracing=retain-on-failure --testrail --tr-config=testrail-config.cfg"
