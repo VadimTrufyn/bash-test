@@ -1,6 +1,7 @@
 name: Trigger on Successful Check for Main Branch
 
 on:
+  workflow_dispatch:
   check_run:
     types: 
       - completed
