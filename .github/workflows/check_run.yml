@@ -2,7 +2,9 @@ name: Trigger on Successful Check for Main Branch
 
 on:
   check_run:
-    types: [completed]
+    types: 
+      - completed
+    
 
 jobs:
   handle-success:
