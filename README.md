@@ -24,5 +24,3 @@ Introduction to Linux as the main operating system for DevOps. Learn basic comma
  [Git task, reflogs](https://github.com/VadimTrufyn/bash-test/blob/main/git-task/git_reflog.txt)
 
 
-
-
