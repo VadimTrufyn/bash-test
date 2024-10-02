@@ -1,0 +1,17 @@
+name: Push to All Branches
+
+on:
+  push:
+    branches:
+      - '**'  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+     
+
+      - name: Run your commands
+        run: |
+          echo "This workflow runs on all branches!"
+          sleep 30
