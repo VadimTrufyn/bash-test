@@ -14,4 +14,4 @@ jobs:
       - name: Run your commands
         run: |
           echo "This workflow runs on all branches!"
-          sleep 30
+          sleep 5
