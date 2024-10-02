@@ -7,7 +7,7 @@ on:
 jobs:
   handle-success:
     runs-on: ubuntu-latest
-    if: ${{ github.event.check_run.conclusion == 'success' && github.ref == 'refs/heads/main' }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
