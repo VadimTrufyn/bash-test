@@ -1,28 +1,41 @@
-name: Dispatch Workflow
-
+name: PROD add annotations to grafana dashboard
 on:
   workflow_dispatch:
 
 jobs:
-  dispatch_job:
-    runs-on: ubuntu-latest
+    annotations:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v3
+            with:
+              ref: main  
+          
+          - name: Get latest commit hash
+            id: get_commit
+            run: |
+              githubSHAShort=$(git rev-parse HEAD | cut -c1-7)
+              echo $githubSHAShort
+              echo "githubSHAShort=$githubSHAShort" >> $GITHUB_ENV    
+          
+          - name: Get latest commit message
+            id: get_message
+            run: |
+              commitMessage=$(git log -1 --pretty=%B | sed -n '1p' | tr ' ' '-')
+              echo $commitMessage
+              echo "commitMessage=$commitMessage" >> $GITHUB_ENV
+            
+          - name: Get annotations message
+            run: |
+              githubSHAShort=${{ env.githubSHAShort }}
+              commitMessage=${{ env.commitMessage }}
+              echo $githubSHAShort
+              echo $commitMessage
+              curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer token" \
+              -d "{
+                \"time\": $(date +%s000),
+                \"text\": \"Deployment: $githubSHAShort $commitMessage\",
+                \"tags\": [\"deploy\", \"github-action\", \"promova\", \"frontend\"]
+              }" \
+              https://monitoring.promova.work/api/annotations
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        ref: main  
-
-    - name: Get latest commit hash
-      id: get_commit
-      run: |
-        gitHash=$(git rev-parse HEAD | cut -c1-7)
-        echo $gitHash
-        echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
-
-    - name: Get latest commit message
-      id: get_message
-      run: |
-        gitMesage=$(git log -1 --pretty=%B | sed -n '1p' | tr ' ' '-')
-        echo $gitMesage
-        echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
