@@ -16,11 +16,13 @@ jobs:
     - name: Get latest commit hash
       id: get_commit
       run: |
-        echo $(git rev-parse HEAD | | cut -c1-7)
+        gitHash=$(git rev-parse HEAD | cut -c1-7)
+        echo $gitHash
         echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
     - name: Get latest commit message
       id: get_message
       run: |
-        echo $(git log -1 --pretty=%B | | sed -n '1p' | tr ' ' '-')
+        gitMesage=$(git log -1 --pretty=%B | sed -n '1p' | tr ' ' '-')
+        echo $gitMesage
         echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
