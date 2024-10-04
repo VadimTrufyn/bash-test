@@ -1,0 +1,26 @@
+name: Dispatch Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dispatch_job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        ref: main  
+
+    - name: Get latest commit hash
+      id: get_commit
+      run: |
+        echo $(git rev-parse HEAD)
+        echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+    - name: Get latest commit message
+      id: get_message
+      run: |
+        echo $(git log -1 --pretty=%B)
+        echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
