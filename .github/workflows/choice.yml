@@ -1,0 +1,30 @@
+name: Conditional Jobs Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      job_choice:
+        description: 'Choose which job(s) to run'
+        required: true
+        default: 'job1'
+        options:
+          - job1
+          - job1+2
+      variable:
+        description: 'Input variable to use'
+        required: true
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.job_choice == 'job1' || github.event.inputs.job_choice == 'job1+2' }}
+    steps:
+      - name: Run Job 1
+        run: echo "Running Job 1 with variable: ${{ github.event.inputs.variable }}"
+
+  job2:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.job_choice == 'job1+2' }}
+    steps:
+      - name: Run Job 2
+        run: echo "Running Job 2 with variable: ${{ github.event.inputs.variable }}"
