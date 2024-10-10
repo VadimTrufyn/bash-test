@@ -27,7 +27,11 @@ jobs:
           go mod tidy
 
       - name: Build 
-        run: docker build -t test:1 .
+        run: |
+          pwd
+          ls -la
+          cd imaginary
+          docker build -t test:1 .
 
       
   
