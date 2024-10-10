@@ -9,7 +9,7 @@ jobs:
       - name: Checkout repo
         run: |
           git clone https://github.com/h2non/imaginary.git
-          cd imaginary
+          
 
       - uses: actions/setup-go@v5
         with:
@@ -20,6 +20,10 @@ jobs:
 
       - name: Add depp
         run: |
+          pwd
+          ll
+          cd imaginary
+          ll
           go mod tidy
 
       - name: Build 
