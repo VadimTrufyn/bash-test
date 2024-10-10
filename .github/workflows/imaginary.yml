@@ -33,11 +33,7 @@ jobs:
         run: |
           pwd
           ls -la
-          ls -la ..
-          cp ./Dockerfile ../imaginary/Dockerfile
-          pwd
-          ls -la
-          cd ../imaginary
+          cd imaginary
           ls -la
           go mod tidy
 
