@@ -69,8 +69,5 @@ jobs:
           docker stop imaginary
           docker rm imaginary
         fi
-        docker run -d --log-driver json-file --log-opt tag=\"imaginary|{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}\" --log-opt max-size=250m --restart=always \
-        --network=adshydra_network \
-        -p 9000:9000 \
-        --name imaginary $AWS_IMAGINARY_ERC/imaginary:${{ github.event.inputs.variable }} -enable-url-source
+        docker run -d --restart=always -p 9000:9000 --name imaginary $AWS_IMAGINARY_ERC/imaginary:${{ github.event.inputs.variable }} -enable-url-source
 
