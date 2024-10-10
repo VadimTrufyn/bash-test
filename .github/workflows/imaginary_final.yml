@@ -16,14 +16,11 @@ on:
           description: 'Input image tag to use'
           required: true
           default: 'latest'
-env:
-    AWS_IMAGINARY_ERC: ${{ secrets.AWS_ADSHYDRA_ECR }}
-    ADSHYDRA_SERVER_IP: ${{ secrets.ADSHYDRA_SERVER_IP }}
 
 jobs:
   build:
     if: ${{ github.event.inputs.job_choice == 'build' || github.event.inputs.job_choice == 'build_deploy' }}
-    runs-on: promova-backend    
+    runs-on: ubuntu-latest    
     steps:
       - name: Checkout this repository
         uses: actions/checkout@v3
@@ -56,7 +53,7 @@ jobs:
 
   deploy:
     if: ${{ github.event.inputs.job_choice == 'deploy' || github.event.inputs.job_choice == 'build_deploy' }}
-    runs-on: promova-backend    
+    runs-on: ubuntu-latest    
     steps:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
