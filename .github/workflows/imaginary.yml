@@ -1,0 +1,29 @@
+name: Build imaginary
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        run: |
+          git clone https://github.com/h2non/imaginary.git
+          cd imaginary
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '^1.13.1' # The Go version to download (if necessary) and use.
+        
+      - name: Versions
+        run: go version
+
+      - name: Add depp
+        run: |
+          go mod tidy
+
+      - name: Build 
+        run: docker build -t test:1 .
+
+      
+  
