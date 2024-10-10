@@ -1,0 +1,79 @@
+name: Build and/or Deploy Imaginary Containers Hydra server
+
+on:
+    workflow_dispatch:
+      inputs:
+        job_choice:
+          description: 'Choose which job(s) to run'
+          required: true
+          default: 'deploy'
+          type: choice
+          options:
+            - deploy
+            - build
+            - build_deploy
+        variable:
+          description: 'Input image tag to use'
+          required: true
+          default: 'latest'
+env:
+    AWS_IMAGINARY_ERC: ${{ secrets.AWS_ADSHYDRA_ECR }}
+    ADSHYDRA_SERVER_IP: ${{ secrets.ADSHYDRA_SERVER_IP }}
+
+jobs:
+  build:
+    if: ${{ github.event.inputs.job_choice == 'build' || github.event.inputs.job_choice == 'build_deploy' }}
+    runs-on: promova-backend    
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v3
+      
+      - name: Clone external repository and replace Dockerfile
+        run: |
+          git clone https://github.com/h2non/imaginary.git
+          cd imaginary
+          mv ../.github/build/imaginary/Dockerfile ./Dockerfile
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '^1.13.1'
+        
+      - name: Go mod tidy
+        run: |
+          cd imaginary
+          go mod tidy
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+        
+      - name: Build 
+        run: |
+          pwd
+          ls -la
+          cd imaginary
+          docker build -t truefunnny/go-test:latest .
+          docker push truefunnny/go-test:${{ github.event.inputs.variable }}
+
+  deploy:
+    if: ${{ github.event.inputs.job_choice == 'deploy' || github.event.inputs.job_choice == 'build_deploy' }}
+    runs-on: promova-backend    
+    steps:
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+       
+
+    - name: Pull new version of container on services server
+      run: |
+          docker pull truefunnny/go-test:${{ github.event.inputs.variable }}
+
+    - name: Deploy new version of container
+      run: |
+        if docker ps -a --format "{{.Names}}" | grep -q "^imaginary$"; then
+          docker stop imaginary
+          docker rm imaginary
+        fi
+        docker run -d --log-driver json-file --log-opt tag=\"imaginary|{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}\" --log-opt max-size=250m --restart=always \
+        --network=adshydra_network \
+        -p 9000:9000 \
+        --name imaginary $AWS_IMAGINARY_ERC/imaginary:${{ github.event.inputs.variable }} -enable-url-source
+
