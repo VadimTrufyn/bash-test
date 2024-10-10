@@ -11,9 +11,7 @@ jobs:
           git clone https://github.com/h2non/imaginary.git
       - name: Checkout your repo for Dockerfile
         uses: actions/checkout@v3
-        with:
-          # Використовуємо поточний репозиторій для Dockerfile
-          path: ./Dockerfile
+
 
       
           
@@ -27,7 +25,10 @@ jobs:
 
       - name: Add depp
         run: |
-          cp Dockerfile ../imaginary/Dockerfile
+          pwd
+          ls -la
+          ls -la ..
+          cp ./Dockerfile ../imaginary/Dockerfile
           pwd
           ls -la
           cd ../imaginary
