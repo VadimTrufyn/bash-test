@@ -65,5 +65,5 @@ jobs:
 
     - name: Deploy new version of container
       run: |
-        docker run -d --restart=always -p 9000:9000 --name imaginary $AWS_IMAGINARY_ERC/imaginary:${{ github.event.inputs.variable }} -enable-url-source
+        docker run -d --restart=always -p 9000:9000 --name imaginary truefunnny/go-test:${{ github.event.inputs.variable }} -enable-url-source
 
