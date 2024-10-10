@@ -42,7 +42,8 @@ jobs:
           pwd
           ls -la
           cd imaginary
-          docker build -t test:1 .
+          docker build -t truefunnny/go-test:latest .
+          docker push truefunnny/go-test:latest
 
       
   
