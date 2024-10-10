@@ -7,12 +7,14 @@ on:
         description: 'Choose which job(s) to run'
         required: true
         default: 'job1'
+        type: choice
         options:
           - job1
           - job1+2
       variable:
         description: 'Input variable to use'
         required: true
+        default: 'latest'
 
 jobs:
   job1:
