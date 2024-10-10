@@ -21,9 +21,9 @@ jobs:
       - name: Add depp
         run: |
           pwd
-          ll
+          ls -la
           cd imaginary
-          ll
+          ls -la
           go mod tidy
 
       - name: Build 
