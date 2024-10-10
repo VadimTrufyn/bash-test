@@ -19,7 +19,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.inputs.job_choice == 'build' || github.event.inputs.job_choice == 'build_deploy' }}
+    if: ${{ github.event.inputs.job_choice == 'build' }}
     runs-on: ubuntu-latest    
     steps:
       - name: Checkout this repository
@@ -52,7 +52,7 @@ jobs:
           docker push truefunnny/go-test:${{ github.event.inputs.variable }}
 
   deploy:
-    if: ${{ github.event.inputs.job_choice == 'deploy' || github.event.inputs.job_choice == 'build_deploy' }}
+    if: ${{ github.event.inputs.job_choice == 'deploy' }}
     runs-on: ubuntu-latest    
     steps:
     - name: Log in to Docker Hub
@@ -67,3 +67,16 @@ jobs:
       run: |
         docker run -d --restart=always -p 9000:9000 --name imaginary truefunnny/go-test:${{ github.event.inputs.variable }} -enable-url-source
 
+  build_and_deploy:
+    if: ${{ github.event.inputs.job_choice == 'build_deploy' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger build job
+        run: |
+          echo "Triggering build job..."
+          gh workflow run Build-and-Deploy --field job_choice=build --field variable=${{ github.event.inputs.variable }}
+      
+      - name: Trigger deploy job
+        run: |
+          echo "Triggering deploy job..."
+          gh workflow run Build-and-Deploy --field job_choice=deploy --field variable=${{ github.event.inputs.variable }}
