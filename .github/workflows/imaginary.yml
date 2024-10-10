@@ -9,6 +9,13 @@ jobs:
       - name: Checkout repo
         run: |
           git clone https://github.com/h2non/imaginary.git
+      - name: Checkout your repo for Dockerfile
+        uses: actions/checkout@v3
+        with:
+          # Використовуємо поточний репозиторій для Dockerfile
+          path: ./Dockerfile
+
+      
           
 
       - uses: actions/setup-go@v5
@@ -20,9 +27,10 @@ jobs:
 
       - name: Add depp
         run: |
+          cp Dockerfile ../imaginary/Dockerfile
           pwd
           ls -la
-          cd imaginary
+          cd ../imaginary
           ls -la
           go mod tidy
 
