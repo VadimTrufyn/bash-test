@@ -65,9 +65,5 @@ jobs:
 
     - name: Deploy new version of container
       run: |
-        if docker ps -a --format "{{.Names}}" | grep -q "^imaginary$"; then
-          docker stop imaginary
-          docker rm imaginary
-        fi
         docker run -d --restart=always -p 9000:9000 --name imaginary $AWS_IMAGINARY_ERC/imaginary:${{ github.event.inputs.variable }} -enable-url-source
 
