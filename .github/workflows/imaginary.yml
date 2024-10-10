@@ -9,12 +9,18 @@ jobs:
       - name: Checkout repo
         run: |
           git clone https://github.com/h2non/imaginary.git
-      - name: Checkout your repo for Dockerfile
+
+
+      - name: Checkout this repository
         uses: actions/checkout@v3
-
-
       
-          
+      # Клонування іншого репозиторію з кодом
+      - name: Clone external repository
+        run: |
+          git clone https://github.com/h2non/imaginary.git
+          cd imaginary
+          # Замінюємо Dockerfile
+          mv ../Dockerfile ./Dockerfile
 
       - uses: actions/setup-go@v5
         with:
