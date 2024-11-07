@@ -11,7 +11,11 @@ jobs:
     steps:
      
 
-      - name: Run your commands
+      - name: Run step only on main branch
+        if: github.ref == 'refs/heads/main'
+        run: echo "This step runs only on the main branch"
+
+      - name: Upload reports to S3
+        if: ${{ always() && github.ref == 'refs/heads/main' }}
         run: |
-          echo "This workflow runs on all branches!"
-          sleep 5
+          echo "second step"
