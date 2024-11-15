@@ -1,21 +1,17 @@
-name: Push to All Branches
-
+name: Build and deploy AI bot to DEV server
 on:
+  workflow_dispatch:
   push:
     branches:
-      - '**'  
+      - main
+  
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: promova_backend_1
+    outputs:
+      ecr_pass: ${{ steps.ecr_password.outputs.ecr_pass }}
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
      
 
-      - name: Run step only on main branch
-        if: github.ref == 'refs/heads/main'
-        run: echo "This step runs only on the main branch"
-
-      - name: Upload reports to S3
-        if: ${{ always() && github.ref == 'refs/heads/main' }}
-        run: |
-          echo "second step"
