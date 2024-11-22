@@ -29,13 +29,13 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Post to a Slack channel
+      - name: Post to Slack channel
         uses: slackapi/slack-github-action@v2.0.0
         with:
           method: chat.postMessage
-          token: ${{ secrets.SLACK_WEBHOOK_URL }}
+          token: ${{  secrets.SLACK_WEBHOOK_URL }}
           payload: |
-            channel: "U07AA349N5N"
-            text: "howdy <@channel>!"
+            channel: "U07AA349N5N" 
+            text: "Новий коміт у головній гілці! 🚀"
      
 
