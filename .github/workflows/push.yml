@@ -21,7 +21,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: "*{workflow}* in repository *{repo}*"
-          mention_users: "U07AA349N5N"
+          channel: "U07AA349N5N"
           message_format: |
             {emoji} Workflow *{workflow}* {status_message} in <{repo_url}|{repo}>
             <{run_url}|View Workflow Run>
