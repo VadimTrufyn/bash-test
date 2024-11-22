@@ -30,6 +30,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Post to Slack channel
+        id: slack_notify
         uses: slackapi/slack-github-action@v2.0.0
         with:
           method: chat.postMessage
@@ -37,5 +38,6 @@ jobs:
           payload: |
             channel: "U07AA349N5N" 
             text: "Новий коміт у головній гілці! 🚀"
+
      
 
