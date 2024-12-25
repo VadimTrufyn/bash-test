@@ -17,7 +17,7 @@ jobs:
 
       - name: Notify
         run: |
-          echo env.branch_name
+          echo $branch_name
 
       - name: Notify on Failure
         if: ${{ failure() && (env.branch_name == 'main' || env.branch_name == 'stage') }}
