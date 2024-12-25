@@ -1,0 +1,14 @@
+
+name: Build
+on:
+  push:
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo "test"
+
+  call-test-lint:
+    uses: ./.github/workflows/test_lint.yml
