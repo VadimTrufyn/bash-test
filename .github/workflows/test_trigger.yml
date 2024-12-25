@@ -20,6 +20,6 @@ jobs:
           echo $branch_name
 
       - name: Notify on Failure
-        if: ${{ failure() && (env.branch_name == 'main' || env.branch_name == 'stage') }}
+        if: ${{ (env.branch_name == 'main' || env.branch_name == 'stage') }}
         run: |
-          echo " test"
+          echo " test--------"
