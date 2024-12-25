@@ -10,5 +10,16 @@ jobs:
       - name: test
         run: echo "test"
 
-  call-test-lint:
-    uses: ./.github/workflows/test_lint.yml
+      - name: Extract branch name
+        id: extract_branch
+        run: |
+          echo "branch_name=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+
+      - name: Notify
+        run: |
+          echo env.branch_name
+
+      - name: Notify on Failure
+        if: ${{ failure() && (env.branch_name == 'main' || env.branch_name == 'stage') }}
+        run: |
+          echo " test"
