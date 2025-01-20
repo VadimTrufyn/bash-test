@@ -1,0 +1,23 @@
+name: Vercel Comment Trigger
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  extract-link:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Extract link from Vercel comment
+        id: extract_link
+        run: |
+          echo "Comment body: ${{ github.event.comment.body }}"
+          LINK=$(echo "${{ github.event.comment.body }}" | grep -Eo 'https?://[^ ]+')
+          echo "Extracted link: $LINK"
+          echo "link=$LINK" >> $GITHUB_OUTPUT
+
+      - name: Output extracted link
+        run: echo "The extracted link is: ${{ steps.extract_link.outputs.link }}"
