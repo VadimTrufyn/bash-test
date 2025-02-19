@@ -1,4 +1,4 @@
-name: Build and deploy AI bot to DEV server
+name: escape
 on:
   workflow_dispatch:
   push:
@@ -11,30 +11,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
-      - name: Build and Test
-        run: echo "Running build and tests..."
-
-      - name: Notify Slack
-        uses: ravsamhq/notify-slack-action@v2
-        if: always()
-        with:
-          status: ${{ job.status }}
-          notification_title: "*{workflow}* in repository *{repo}*"
-          channel: "U07AA349N5N"
-          message_format: |
-            {emoji} Workflow *{workflow}* {status_message} in <{repo_url}|{repo}>
-            <{run_url}|View Workflow Run>
-          footer: "Department: Frontend"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_CHANNEL: "U07AA349N5N"
-          SLACK_MESSAGE: "test"
+      - name: Escape commit message for JSON
+        id: escaped_commit_message
+        run: echo "message=$(jq -Rs . <<< '${{ github.event.head_commit.message }}')" >> "$GITHUB_ENV"
+        
+      - name: Use escaped commit message
+        run: echo "Escaped message: ${{ env.message }}"
           
 
         
