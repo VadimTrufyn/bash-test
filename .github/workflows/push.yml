@@ -16,7 +16,8 @@ jobs:
         run: echo "message=$(jq -Rs . <<< '${{ github.event.head_commit.message }}')" >> "$GITHUB_ENV"
         
       - name: Use escaped commit message
-        run: echo "Escaped message: $message"
+        run: |
+          echo "Escaped message: ${{ env.message }}"
           
 
         
