@@ -1,38 +1,71 @@
-name: Check if last commit was a merge from Dev
+name: Check Main Push Type
+
 on:
   push:
     branches:
       - main
 
 jobs:
-  detect-merge:
+  check-push-type:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Check out repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Check if last commit was a merge from Dev
+        with:
+          fetch-depth: 0  # Важливо отримати повну історію для аналізу
+      
+      - name: Determine push type
+        id: check-type
         run: |
-          git fetch origin main dev --depth=10
+          # Отримуємо хеш останнього коміту
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          echo "Current commit: $CURRENT_COMMIT"
           
-          # Перевірка, чи є коміт мерджу в main
-          LAST_MERGE_COMMIT=$(git log --merges origin/main -n 1 --format=%H)
+          # Перевіряємо, чи є останній коміт мердж-комітом
+          IS_MERGE=$(git show --no-patch --format="%p" $CURRENT_COMMIT | wc -w)
           
-          if [ -z "$LAST_MERGE_COMMIT" ]; then
-            echo "No merge commits found in main"
-            exit 1
-          fi
-          
-          # Отримуємо батьківські коміти останнього мерджу
-          MERGED_BRANCHES=$(git log -1 --format=%P $LAST_MERGE_COMMIT)
-          
-          # Якщо останній коміт не є мерджем або не містить гілки Dev, виводимо, що не було мерджу
-          DEV_COMMIT=$(git rev-parse origin/dev)
-          
-          if echo "$MERGED_BRANCHES" | grep -q "$DEV_COMMIT"; then
-            echo "Detected merge from Dev to Main"
+          if [ "$IS_MERGE" -gt 1 ]; then
+            echo "This is a merge commit with multiple parents"
+            
+            # Отримуємо батьківські коміти
+            PARENTS=$(git show --no-patch --format="%p" $CURRENT_COMMIT)
+            echo "Parent commits: $PARENTS"
+            
+            # Перевіряємо, чи один з батьків належить до dev гілки
+            DEV_BRANCH_CONTAINS=""
+            for PARENT in $PARENTS; do
+              if git branch --contains $PARENT | grep -q "dev"; then
+                DEV_BRANCH_CONTAINS="true"
+                echo "Found parent commit $PARENT that belongs to dev branch"
+                break
+              fi
+            done
+            
+            if [ -n "$DEV_BRANCH_CONTAINS" ]; then
+              echo "This is a merge from dev branch to main"
+              echo "push_type=merge_from_dev" >> $GITHUB_OUTPUT
+            else
+              echo "This is a merge, but not from dev branch"
+              echo "push_type=other_merge" >> $GITHUB_OUTPUT
+            fi
           else
-            echo "No recent merge from Dev"
+            echo "This is a direct commit to main (not a merge)"
+            echo "push_type=direct_commit" >> $GITHUB_OUTPUT
           fi
-
-     
-
+      
+      - name: Take action based on push type
+        run: |
+          if [ "${{ steps.check-type.outputs.push_type }}" == "direct_commit" ]; then
+            echo "Warning: Direct commit to main detected!"
+            # Тут можна додати додаткові дії для прямого коміту в main
+            # Наприклад, відправити сповіщення або згенерувати помилку
+            
+          elif [ "${{ steps.check-type.outputs.push_type }}" == "merge_from_dev" ]; then
+            echo "OK: This is a proper merge from dev branch"
+            # Можна додати додаткові перевірки для мерджу з dev
+            
+          else
+            echo "Warning: Merge detected, but not from dev branch"
+            # Тут можна додати обробку для інших видів мерджу
+          fi
