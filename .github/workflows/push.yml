@@ -13,22 +13,26 @@ jobs:
       - name: Check if last commit was a merge from Dev
         run: |
           git fetch origin main dev --depth=10
-
+          
+          # Перевірка, чи є коміт мерджу в main
           LAST_MERGE_COMMIT=$(git log --merges origin/main -n 1 --format=%H)
+          
           if [ -z "$LAST_MERGE_COMMIT" ]; then
             echo "No merge commits found in main"
             exit 1
           fi
           
-          MERGED_BRANCH=$(git log -1 --format=%P $LAST_MERGE_COMMIT | awk '{print $2}')
+          # Отримуємо батьківські коміти останнього мерджу
+          MERGED_BRANCHES=$(git log -1 --format=%P $LAST_MERGE_COMMIT)
+          
+          # Якщо останній коміт не є мерджем або не містить гілки Dev, виводимо, що не було мерджу
           DEV_COMMIT=$(git rev-parse origin/dev)
           
-          if [ "$MERGED_BRANCH" = "$DEV_COMMIT" ]; then
+          if echo "$MERGED_BRANCHES" | grep -q "$DEV_COMMIT"; then
             echo "Detected merge from Dev to Main"
           else
             echo "No recent merge from Dev"
           fi
-        
 
      
 
