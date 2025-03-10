@@ -12,10 +12,19 @@ jobs:
         uses: actions/checkout@v4
       - name: Check if last commit was a merge from Dev
         run: |
-          git fetch origin dev --depth=1
-          if git log --merges -n 1 --format=%P | grep "$(git rev-parse origin/dev)"; then
+          git fetch origin main dev --depth=10
+
+          LAST_MERGE_COMMIT=$(git log --merges origin/main -n 1 --format=%H)
+          if [ -z "$LAST_MERGE_COMMIT" ]; then
+            echo "No merge commits found in main"
+            exit 1
+          fi
+          
+          MERGED_BRANCH=$(git log -1 --format=%P $LAST_MERGE_COMMIT | awk '{print $2}')
+          DEV_COMMIT=$(git rev-parse origin/dev)
+          
+          if [ "$MERGED_BRANCH" = "$DEV_COMMIT" ]; then
             echo "Detected merge from Dev to Main"
-            exit 0
           else
             echo "No recent merge from Dev"
           fi
