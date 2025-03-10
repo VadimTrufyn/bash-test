@@ -23,9 +23,3 @@ Introduction to Linux as the main operating system for DevOps. Learn basic comma
  The basics of version control with Git. Working with repositories, commits, branches, and merge-requests.
  [Git task, reflogs](https://github.com/VadimTrufyn/bash-test/blob/main/git-task/git_reflog.txt)
 
-
-
-
-
-
-
