@@ -14,11 +14,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
-    - name: Merge main -> develop
-      uses: devmasx/merge-branch@master
-      with:
-        type: now
-        from_branch: main
-        target_branch: dev
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Merge main into uat
+      run: |
+        git fetch origin main
+        git merge origin/main --no-edit
+        git push origin dev
