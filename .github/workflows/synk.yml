@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - 'main'
+  workflow_dispatch:
+
 permissions:
   contents: write
-  
+
 jobs:
   sync_dev_uat:
     runs-on: ubuntu-latest
@@ -14,11 +16,24 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
-    - name: Merge main -> develop
-      uses: devmasx/merge-branch@master
       with:
-        type: now
-        from_branch: main
-        target_branch: dev
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0  # потрібно для повного git історії
+
+    - name: Set up Git config
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Merge main into dev
+      run: |
+        # Переключитися на dev (або створити, якщо немає)
+        git checkout dev || git checkout -b dev origin/dev
+
+        # Мердж з main
+        git merge origin/main --no-edit
+
+        # Коміт з прапором skip-ci
+        git commit --amend -m "Sync main → dev [skip-ci]" || echo "No amend needed"
+
+        # Push змін
+        git push origin dev
