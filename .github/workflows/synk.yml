@@ -1,0 +1,24 @@
+name: Sync Main branch to Dev
+
+on:
+  push:
+    branches:
+      - 'main'
+permissions:
+  contents: write
+  
+jobs:
+  sync_dev_uat:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Merge main -> develop
+      uses: devmasx/merge-branch@master
+      with:
+        type: now
+        from_branch: main
+        target_branch: dev
+        github_token: ${{ secrets.GITHUB_TOKEN }}
