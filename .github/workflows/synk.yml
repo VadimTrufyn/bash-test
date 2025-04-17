@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Merge staging -> uat
-      uses: devmasx/merge-branch@6ec8363d74aad4f1615d1234ae1908b4185c4313
+      uses: devmasx/merge-branch@main
       with:
         type: now
         from_branch: main
