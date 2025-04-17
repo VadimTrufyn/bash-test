@@ -1,4 +1,4 @@
-# Solvaing tasks
+# Solving tasks
 
 ### Linux: 
 Introduction to Linux as the main operating system for DevOps. Learn basic commands, file system management, and basic administrative tasks.
