@@ -15,8 +15,16 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       
-    - name: Merge main into uat
+    - name: Merge main into dev
       run: |
-        git fetch origin main
+        # Переключитися на dev (або створити, якщо немає)
+        git checkout dev || git checkout -b dev origin/dev
+
+        # Мердж з main
         git merge origin/main --no-edit
+
+        # Коміт з прапором skip-ci
+        git commit --amend -m "Sync main → dev [skip-ci]" || echo "No amend needed"
+
+        # Push змін
         git push origin dev
