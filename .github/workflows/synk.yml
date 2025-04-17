@@ -16,24 +16,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Merge staging -> uat
+      uses: devmasx/merge-branch@6ec8363d74aad4f1615d1234ae1908b4185c4313
       with:
-        fetch-depth: 0  # потрібно для повного git історії
-
-    - name: Set up Git config
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-
-    - name: Merge main into dev
-      run: |
-        # Переключитися на dev (або створити, якщо немає)
-        git checkout dev || git checkout -b dev origin/dev
-
-        # Мердж з main
-        git merge origin/main --no-edit
-
-        # Коміт з прапором skip-ci
-        git commit --amend -m "Sync main → dev [skip-ci]" || echo "No amend needed"
-
-        # Push змін
-        git push origin dev
+        type: now
+        from_branch: main
+        target_branch: dev
+        github_token: ${{ secrets.GH_TOKEN }}
